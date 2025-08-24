@@ -3,9 +3,10 @@ services:
     name: pc-scraper
     env: python
     buildCommand: "pip install -r requirements.txt && playwright install chromium"
-    startCommand: "python scraper.py"
+    startCommand: "python render_scraper.py"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.9
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /opt/render/project/.cache
+    runtime: python
