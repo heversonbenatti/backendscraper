@@ -20,10 +20,10 @@ logger = logging.getLogger(__name__)
 
 class TelegramPriceBot:
     def __init__(self):
-        # Configurações do bot
-        self.bot_token = "8363912617:AAGe1NzPkNjvQ_zo4dnUT7Ycr9y98bL-0qA"  # Token do seu bot
-        self.chat_id = "2113081302"     # Seu chat ID
-        self.database_url = "postgresql://postgres:Knz80801313.@db.qoxombfdecenhpfhiphg.supabase.co:5432/postgres"
+        # ✅ SEGURO - Usando variáveis de ambiente
+        self.bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+        self.chat_id = os.getenv('TELEGRAM_CHAT_ID') 
+        self.database_url = os.getenv('DATABASE_URL')
         
         if not all([self.bot_token, self.chat_id, self.database_url]):
             raise ValueError("Variáveis de ambiente necessárias: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, DATABASE_URL")
@@ -218,8 +218,13 @@ class TelegramPriceBot:
                 await asyncio.sleep(300)  # 5 minutos em caso de erro
 
 # Função para obter seu chat ID
-async def get_my_chat_id(bot_token: str):
-    """Helper para descobrir seu chat ID"""
+async def get_my_chat_id():
+    """Helper para descobrir seu chat ID - ✅ SEGURO"""
+    bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    if not bot_token:
+        print("❌ Configure a variável TELEGRAM_BOT_TOKEN primeiro!")
+        return
+        
     bot = Bot(token=bot_token)
     
     print("Envie qualquer mensagem para o bot e execute este comando...")
@@ -233,8 +238,8 @@ async def get_my_chat_id(bot_token: str):
                 print("---")
 
 if __name__ == "__main__":
-    # Para descobrir seu chat ID (execute uma vez):
-    # asyncio.run(get_my_chat_id("SEU_BOT_TOKEN"))
+    # Para descobrir seu chat ID:
+    # asyncio.run(get_my_chat_id())
     
     # Para rodar o bot:
     bot = TelegramPriceBot()
