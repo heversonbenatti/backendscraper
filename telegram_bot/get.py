@@ -1,8 +1,16 @@
 import asyncio
+import os
 from telegram import Bot
 
 async def get_chat_id():
-    bot = Bot(token="8363912617:AAGe1NzPkNjvQ_zo4dnUT7Ycr9y98bL-0qA")
+    # ✅ SEGURO - Usando variável de ambiente
+    bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    
+    if not bot_token:
+        print("❌ Configure a variável de ambiente TELEGRAM_BOT_TOKEN primeiro!")
+        return
+    
+    bot = Bot(token=bot_token)
     updates = await bot.get_updates()
     
     for update in updates:
@@ -10,4 +18,5 @@ async def get_chat_id():
             print(f"Seu Chat ID é: {update.message.chat.id}")
             break
 
-asyncio.run(get_chat_id())
+if __name__ == "__main__":
+    asyncio.run(get_chat_id())
